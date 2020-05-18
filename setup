@@ -24,6 +24,7 @@ cp upmpdcli.conf /etc/upmpdcli.conf
 cp minidlna.conf /etc/minidlna.conf
 cp gdis_upnp.png /boot
 cp ready.wav streamer.wav coaxial.wav optical.wav wifi.wav ethernet.wav /root
+cp volup voldown /root
 cp shairport-sync.conf /etc/shairport-sync.conf
 dphys-swapfile swapoff
 dphys-swapfile uninstall
