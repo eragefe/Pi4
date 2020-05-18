@@ -155,7 +155,12 @@ def main():
     artist = info['artist']
     title = info['title']
     audio = info['audio_info']
-
+    
+    with open("/boot/input") as file:
+        contents = file.read()
+    if "streamer" in contents:
+        client.spdif()
+        
     if file == 'alsa://hw:0,1':
       with canvas(device) as draw:
 
@@ -167,9 +172,6 @@ def main():
          draw.text((35,0), "coaxial", font=font2, fill=255)
          draw.text((0,13),"--", font=font, fill=255)
          draw.text((70,40),"SPDIF", font=font2, fill=255)
-
-    if rep == 1:
-      client.spdif()
 
     if state == 'stop' and file != 'alsa://hw:0,1':
       with canvas(device) as draw:
