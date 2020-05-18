@@ -12,7 +12,7 @@ gpg --export '7808CE96D38B9201' | sudo apt-key add -
 cp upmpdcli.list /etc/apt/sources.list.d
 apt-get update
 
-apt-get install initramfs-tools initramfs-tools-core lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-sync squeezelite minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
+apt-get install initramfs-tools initramfs-tools-core lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-syn minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
 
 cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
@@ -25,8 +25,6 @@ cp minidlna.conf /etc/minidlna.conf
 cp gdis_upnp.png /boot
 cp ready.wav streamer.wav coaxial.wav optical.wav wifi.wav ethernet.wav /root
 cp shairport-sync.conf /etc/shairport-sync.conf
-mv /etc/init.d/squeezelite /etc/squeezelite
-cp squeezelite /etc/default/squeezelite
 dphys-swapfile swapoff
 dphys-swapfile uninstall
 update-rc.d dphys-swapfile remove
