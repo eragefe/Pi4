@@ -9,7 +9,7 @@ app.debug = True
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template('app.html')
+    return render_template('app2.html')
 
 @app.route('/wifi')
 def wifi():
@@ -51,44 +51,36 @@ def save_credentials():
 @app.route('/dispon', methods = ['GET', 'POST'])
 def dispon():
     os.system('systemctl start oled2')
-    return render_template('app.html')
+    return render_template('app2.html')
 
 @app.route('/dispoff', methods = ['GET', 'POST'])
 def dispoff():
     os.system('systemctl stop oled')
     os.system('systemctl stop oled2')
     os.system('python /root/pi3/oled/off.py')
-    return render_template('app.html')
+    return render_template('app2.html')
 
 @app.route('/reboot', methods = ['GET', 'POST'])
 def reboot():
     time.sleep(1)
-    os.system('reboot')
+    os.system('bash /root/volup')
+    return render_template('app2.html')
 
 @app.route('/poweroff', methods = ['GET', 'POST'])
 def poweroff():
     time.sleep(1)
-    os.system('poweroff')
+    os.system('bash /root/voldown')
+    return render_template('app2.html')
 
 @app.route('/squeeze', methods = ['GET', 'POST'])
 def squeeze():
-    os.system('mount -o remount rw /ro')
-    os.system('cp /ro/etc/squeezelite /ro/etc/init.d')
-    os.system('squeezelite -n GDis_squeeze -o hw:0 -z')
-    os.system('cp /ro/root/pi3/templates/app_sq.html /ro/root/pi3/templates/app.html')
-    os.system('cp /root/pi3/templates/app_sq.html /root/pi3/templates/app.html')
-    os.system('mount -o remount ro /ro')
-    return render_template('app.html')
+    os.system('python /root/test.py')
+    return render_template('app_sq2.html')
 
 @app.route('/upnp', methods = ['GET', 'POST'])
 def upnp():
-    os.system('mount -o remount rw /ro')
-    os.system('killall squeezelite')
-    os.system('rm /ro/etc/init.d/squeezelite')
-    os.system('cp /ro/root/pi3/templates/app_up.html /ro/root/pi3/templates/app.html')
-    os.system('cp /root/pi3/templates/app_up.html /root/pi3/templates/app.html')
-    os.system('mount -o remount ro /ro')
-    return render_template('app.html')
+    os.system('python /root/test2.py')
+    return render_template('app_up2.html')
 
 ######## FUNCTIONS ##########
 
