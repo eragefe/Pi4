@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div id="indexContent">
+      <ul>
+        <img src="/static/gdis.jpg"><a class="dot">.......</a><label for="menu">NOS Network Player</label>
+        <li><a href="{{ url_for('wifi') }}" class="wifi">WiFi setup</a><a class="dot">.......</a><a href="{{ url_for('tidal') }}" class="tidal">Tidal setup</a><a class="dot">.......</a><a class="spot">Spotify setup</a></label><li>
+        <li><label for="menu">Input</label></li>
+        <li><a href="{{ url_for('squeeze') }}" class="squeeze">SPDIF</a> <a class="dot">....</a> <a href="{{ url_for('upnp') }}" class="upnp">Streamer *</a></li>
+        <li><label for="menu">Display</label></li>
+        <li><a href="{{ url_for('dispon') }}" class="dispon">ON</a> <a class="dot">.........</a> <a href="{{ url_for('dispoff') }}" class="dispoff">OFF</a></li>
+        <li><label for="menu">Volume</label></li>
+        <li><a href="{{ url_for('reboot') }}" class="reboot">UP</a><a class="dot">........</a><a href="{{ url_for('poweroff') }}" class="poweroff">DOWN</a></li>
+      </ul>
+    </form>
+  </div>
+{% endblock %}
