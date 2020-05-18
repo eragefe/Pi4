@@ -4,18 +4,25 @@ import time
 import subprocess
 from socket import error as socket_error
 import os.path
+import RPi.GPIO as GPIO
 
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import ssd1306, ssd1325, ssd1331, sh1106
 from mpd import MPDClient, MPDError, CommandError, ConnectionError
 
-serial = i2c(port=1, address=0x3C)
-device = sh1106(serial, rotate=2)
-
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
+
+serial = i2c(port=1, address=0x3C)
+device = sh1106(serial, rotate=0)
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.OUT)
+GPIO.output(17, GPIO.HIGH)
+state17 = GPIO.input(17)
 
 class MPDConnect(object):
     def __init__(self, host='localhost', port=6600):
@@ -55,14 +62,19 @@ class MPDConnect(object):
 
     def spdif(self):
         self._mpd_client.clear()
-        os.system("aplay /root/spdif176400.wav")
+        #os.system("aplay /root/spdif176400.wav")
         self._mpd_client.add("alsa://hw:0,1")
         self._mpd_client.play()
+        self._mpd_client.repeat(0)
         #return False
 
     def fetch(self):
         song_info = self._mpd_client.currentsong()
 
+        if 'file' in song_info:
+            file = song_info['file']
+        else:
+            file = ''
         if 'artist' in song_info:
             artist = song_info['artist']
         else:
@@ -98,8 +110,10 @@ class MPDConnect(object):
             audio_info = ""
 
         vol = song_stats['volume']
+        rep = song_stats['repeat']
+        ran = song_stats['random']
 
-        return({'state':state, 'artist':artist, 'title':title, 'eltime':eltime, 'volume':int(vol), 'audio_info':audio_info})
+        return({'file':file, 'state':state, 'artist':artist, 'title':title, 'eltime':eltime, 'volume':int(vol), 'random':int(ran), 'repeat':int(rep), 'audio_info':audio_info})
 
 font = ImageFont.truetype('/root/pi3/oled/Verdana.ttf', 47)
 font2 = ImageFont.truetype('/root/pi3/oled/Verdana.ttf', 13)
@@ -127,42 +141,59 @@ time.sleep(8)
 def main():
   client = MPDConnect()
   client.connect()
-  client.spdif()
+#  client.spdif()
 
   while True:
 
     info = client.fetch()
+    file = info['file']
     state = info['state']
     vol = info['volume']
+    rep = info['repeat']
+    ran = info['random']
     eltime = info['eltime']
     artist = info['artist']
     title = info['title']
     audio = info['audio_info']
 
-    if (state == 'stop'):
+    if file == 'alsa://hw:0,1':
       with canvas(device) as draw:
 
        if vol>0 and vol<100:
+         draw.text((35,0), "coaxial", font=font2, fill=255)
          draw.text((0,13),str(vol), font=font, fill=255)
+         draw.text((70,40),"SPDIF", font=font2, fill=255)
        if vol==100:
+         draw.text((35,0), "coaxial", font=font2, fill=255)
          draw.text((0,13),"--", font=font, fill=255)
+         draw.text((70,40),"SPDIF", font=font2, fill=255)
 
-    if state == 'play':
-      with canvas(device) as draw:
-
-       if vol>0 and vol<100:
-         draw.text((35,0), audio, font=font2, fill=255)
-         draw.text((0,13),str(vol), font=font, fill=255)
-         draw.text((80,50),str(eltime), font=font2, fill=255)
-         draw.text((87,20),">>", font=font4, fill=255)
-       if vol==100:
-         draw.text((35,0), audio, font=font2, fill=255)
-         draw.text((0,13),"--", font=font, fill=255)
-         draw.text((80,50),str(eltime), font=font2, fill=255)
-         draw.text((87,20),">>", font=font4, fill=255)
-
-    if state == 'pause':
+    if rep == 1:
       client.spdif()
+
+    if state == 'stop' and file != 'alsa://hw:0,1':
+      with canvas(device) as draw:
+
+       if vol>0 and vol<100:
+         draw.text((0,13),str(vol), font=font, fill=255)
+       if vol==100:
+         draw.text((0,13),"--", font=font, fill=255)
+
+    if state == 'play' and file != 'alsa://hw:0,1':
+      with canvas(device) as draw:
+
+       if vol>0 and vol<100:
+         draw.text((35,0), audio, font=font2, fill=255)
+         draw.text((0,13),str(vol), font=font, fill=255)
+         draw.text((80,50),str(eltime), font=font2, fill=255)
+         draw.text((87,20),">>", font=font4, fill=255)
+       if vol==100:
+         draw.text((35,0), audio, font=font2, fill=255)
+         draw.text((0,13),"--", font=font, fill=255)
+         draw.text((80,50),str(eltime), font=font2, fill=255)
+         draw.text((87,20),">>", font=font4, fill=255)
+
+    if state == 'pause' and file != 'alsa://hw:0,1':
       with canvas(device) as draw:
        if vol>0 and vol<100:
 
