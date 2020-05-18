@@ -22,7 +22,6 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.OUT)
 GPIO.output(17, GPIO.HIGH)
-state17 = GPIO.input(17)
 
 class MPDConnect(object):
     def __init__(self, host='localhost', port=6600):
@@ -62,10 +61,8 @@ class MPDConnect(object):
 
     def spdif(self):
         self._mpd_client.clear()
-        #os.system("aplay /root/spdif176400.wav")
         self._mpd_client.add("alsa://hw:0,1")
         self._mpd_client.play()
-        self._mpd_client.repeat(0)
         #return False
 
     def fetch(self):
@@ -122,7 +119,7 @@ font4 = ImageFont.truetype('/root/pi3/oled/Arial-Bold.ttf', 20)
 
 with canvas(device) as draw:
     device.contrast(0)
-    img_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'gdis3.png'))
+    img_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '/root/pi3/oled/gdis3.png'))
     logo = Image.open(img_path)
     draw.bitmap((25, 0), logo, fill="white")
 for level in range(0, 255, 3):
@@ -155,13 +152,20 @@ def main():
     artist = info['artist']
     title = info['title']
     audio = info['audio_info']
-    
-    with open("/boot/input") as file:
-        contents = file.read()
-    if "streamer" in contents:
-        client.spdif()
-        
-    if file == 'alsa://hw:0,1':
+
+    if file == 'alsa://hw:0,1' and GPIO.input(17) == 0:
+      with canvas(device) as draw:
+
+       if vol>0 and vol<100:
+         draw.text((35,0), "optical", font=font2, fill=255)
+         draw.text((0,13),str(vol), font=font, fill=255)
+         draw.text((70,40),"SPDIF", font=font2, fill=255)
+       if vol==100:
+         draw.text((35,0), "optical", font=font2, fill=255)
+         draw.text((0,13),"--", font=font, fill=255)
+         draw.text((70,40),"SPDIF", font=font2, fill=255)
+
+    if file == 'alsa://hw:0,1' and GPIO.input(17) == 1:
       with canvas(device) as draw:
 
        if vol>0 and vol<100:
