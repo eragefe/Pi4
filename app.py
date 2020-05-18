@@ -74,12 +74,12 @@ def poweroff():
 
 @app.route('/squeeze', methods = ['GET', 'POST'])
 def squeeze():
-    os.system('echo coaxial /boot/input')
+    os.system('echo coaxial > /boot/input')
     return render_template('app_sq2.html')
 
 @app.route('/upnp', methods = ['GET', 'POST'])
 def upnp():
-    os.system('echo optical /boot/input')
+    os.system('echo optical > /boot/input')
     return render_template('app_up2.html')
 
 ######## FUNCTIONS ##########
