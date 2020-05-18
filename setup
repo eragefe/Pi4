@@ -50,7 +50,6 @@ sed -i '$ i i2c-dev' /etc/modules
 sed -i '$ i python /root/pi3/app.py &' /etc/rc.local
 sed -i '$ i bash /root/mountusb &' /etc/rc.local
 #sed -i '$ i mpc volume 50' /etc/rc.local
-#sed -i '$ i aplay /root/ready.wav' /etc/rc.local
 sed -i '$ i irexec &' /etc/rc.local
 sed -i '$ i python /root/pi3/default.py' /etc/rc.local
 
@@ -70,20 +69,6 @@ sleep 3
 python3 -m pip install --upgrade setuptools wheel
 pip3 install --upgrade luma.oled
 ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
-
-echo
-echo "---Insalling overlayroot---"
-sleep 3
-
-mkdir /ro
-sed -i '$ i mount -o ro /dev/mmcblk0p2 /ro' /etc/rc.local
-echo overlay > /etc/initramfs-tools/modules
-cd /root/pi3
-cp overlay /etc/initramfs-tools/scripts
-update-initramfs -c -k $(uname -r)
-mv /boot/initrd.img-$(uname -r) /boot/initrd.img
-sed -i '$ a initramfs initrd.img' /boot/config.txt
-sed -i 's/^/boot=overlay /' /boot/cmdline.txt
 
 echo 
 echo "##############################################"
