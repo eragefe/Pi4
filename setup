@@ -2,6 +2,7 @@
 
 
 timedatectl set-timezone Europe/Stockholm
+rm -r /root/pi3
 mv /root/pi4 /root/pi3
 cp gdis.dtbo /boot/overlays
 cp mountusb /root
