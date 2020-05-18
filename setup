@@ -47,9 +47,9 @@ sed -i '$ i gpio=5=op,dl' /boot/config.txt
 sed -i '$ i i2c-dev' /etc/modules
 sed -i '$ i python /root/pi3/app.py &' /etc/rc.local
 sed -i '$ i bash /root/mountusb &' /etc/rc.local
-#sed -i '$ i mpc volume 50' /etc/rc.local
 sed -i '$ i irexec &' /etc/rc.local
-sed -i '$ i python /root/pi3/default.py' /etc/rc.local
+#sed -i '$ i mpc volume 50' /etc/rc.local
+#sed -i '$ i python /root/pi3/default.py' /etc/rc.local
 
 echo
 echo "---Insalling roon---"
