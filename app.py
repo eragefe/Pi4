@@ -2,10 +2,14 @@ from flask import Flask, render_template, request
 import subprocess
 import os
 import time
+import RPi.GPIO as GPIO
 
 app = Flask(__name__)
 app.debug = True
 
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(17, GPIO.OUT)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
@@ -74,12 +78,18 @@ def poweroff():
 
 @app.route('/squeeze', methods = ['GET', 'POST'])
 def squeeze():
-    os.system('echo coaxial > /boot/input')
+    os.system('mpc clear')
+    os.system('mpc add alsa://hw:0,1')
+    os.system('mpc play')
+    GPIO.output(17, GPIO.HIGH)
     return render_template('app_sq2.html')
 
 @app.route('/upnp', methods = ['GET', 'POST'])
 def upnp():
-    os.system('echo optical > /boot/input')
+    os.system('mpc clear')
+    os.system('mpc add alsa://hw:0,1')
+    os.system('mpc play')
+    GPIO.output(17, GPIO.LOW)
     return render_template('app_up2.html')
 
 ######## FUNCTIONS ##########
