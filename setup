@@ -19,7 +19,7 @@ apt-get install initramfs-tools initramfs-tools-core lirc python3-pip mpd mpc up
 cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
 cp input /boot
-cp gdis.lircd.conf /etc/lirc/lircd.conf.d
+cp odro.lircd.conf /etc/lirc/lircd.conf.d
 cp lirc_options.conf /etc/lirc
 mv /etc/upmpdcli.conf /etc/upmpdcli.conf.orig
 cp upmpdcli.conf /etc/upmpdcli.conf
