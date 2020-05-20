@@ -10,6 +10,7 @@ app.debug = True
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
@@ -54,14 +55,12 @@ def save_credentials():
 
 @app.route('/dispon', methods = ['GET', 'POST'])
 def dispon():
-    os.system('systemctl start oled2')
+    GPIO.output(22, GPIO.HIGH)
     return render_template('app2.html')
 
 @app.route('/dispoff', methods = ['GET', 'POST'])
 def dispoff():
-    os.system('systemctl stop oled')
-    os.system('systemctl stop oled2')
-    os.system('python /root/pi3/oled/off.py')
+    GPIO.output(22, GPIO.LOW)
     return render_template('app2.html')
 
 @app.route('/reboot', methods = ['GET', 'POST'])
