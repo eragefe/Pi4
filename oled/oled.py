@@ -20,8 +20,13 @@ device = sh1106(serial, rotate=0)
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(22, GPIO.OUT)
 GPIO.setup(17, GPIO.OUT)
 GPIO.output(17, GPIO.HIGH)
+
+os.system('echo 22 > /sys/class/gpio/export')
+os.system('echo out > /sys/class/gpio/gpio22/direction')
+os.system('echo 1 > /sys/class/gpio/gpio22/value')
 
 class MPDConnect(object):
     def __init__(self, host='localhost', port=6600):
@@ -138,7 +143,6 @@ time.sleep(8)
 def main():
   client = MPDConnect()
   client.connect()
-#  client.spdif()
 
   while True:
 
@@ -152,6 +156,12 @@ def main():
     artist = info['artist']
     title = info['title']
     audio = info['audio_info']
+
+    if GPIO.input(22) == 0:
+      device.hide()
+
+    if GPIO.input(22) == 1:
+      device.show()
 
     if file == 'alsa://hw:0,1' and GPIO.input(17) == 0:
       with canvas(device) as draw:
