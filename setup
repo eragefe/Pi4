@@ -2,7 +2,6 @@
 
 
 timedatectl set-timezone Europe/Stockholm
-rm -r /root/pi3
 mv /root/pi4 /root/pi3
 cp gdis.dtbo /boot/overlays
 cp mountusb /root
@@ -14,7 +13,7 @@ gpg --export '7808CE96D38B9201' | sudo apt-key add -
 cp upmpdcli.list /etc/apt/sources.list.d
 apt-get update
 
-apt-get install initramfs-tools initramfs-tools-core lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-syn minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
+apt-get install lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-syn minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
 
 cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
@@ -26,13 +25,8 @@ cp upmpdcli.conf /etc/upmpdcli.conf
 cp minidlna.conf /etc/minidlna.conf
 cp gdis_upnp.png /boot
 #cp ready.wav streamer.wav coaxial.wav optical.wav wifi.wav ethernet.wav /root
-cp volup voldown /root
 cp shairport-sync.conf /etc/shairport-sync.conf
-dphys-swapfile swapoff
-dphys-swapfile uninstall
-update-rc.d dphys-swapfile remove
 update-rc.d minidlna defaults
-cp oled2.service /etc/systemd/system
 cp oled.service /etc/systemd/system
 systemctl enable oled
 
@@ -44,13 +38,13 @@ sed -i '$ i dtparam=pwr_led_trigger=none' /boot/config.txt
 sed -i '$ i dtparam=pwr_led_activelow=off' /boot/config.txt
 sed -i '$ i dtoverlay=pi3-act-led' /boot/config.txt
 sed -i '$ i dtparam=act-led-trigger=none' /boot/config.txt
-sed -i '$ i dtoverlay=lirc-rpi,gpio_in_pin=4' /boot/config.txt
-sed -i '$ i gpio=17=op,dl' /boot/config.txt
-sed -i '$ i gpio=5=op,dl' /boot/config.txt
+sed -i '$ i dtoverlay=gpio-ir,gpio_pin=4' /boot/config.txt
+#sed -i '$ i gpio=17=op,dl' /boot/config.txt
+#sed -i '$ i gpio=5=op,dl' /boot/config.txt
 sed -i '$ i i2c-dev' /etc/modules
 sed -i '$ i python /root/pi3/app.py &' /etc/rc.local
 sed -i '$ i bash /root/mountusb &' /etc/rc.local
-sed -i '$ i irexec &' /etc/rc.local
+sed -i '$ i irexec > /dev/null &' /etc/rc.local
 #sed -i '$ i mpc volume 50' /etc/rc.local
 #sed -i '$ i python /root/pi3/default.py' /etc/rc.local
 
