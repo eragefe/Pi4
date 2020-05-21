@@ -13,7 +13,7 @@ gpg --export '7808CE96D38B9201' | sudo apt-key add -
 cp upmpdcli.list /etc/apt/sources.list.d
 apt-get update
 
-apt-get install lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-syn minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
+apt-get install lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-sync minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
 
 cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
