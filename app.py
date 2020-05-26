@@ -66,13 +66,13 @@ def dispoff():
 @app.route('/reboot', methods = ['GET', 'POST'])
 def reboot():
     time.sleep(1)
-    os.system('bash /root/volup')
+    os.system('mpc volume +1')
     return render_template('app2.html')
 
 @app.route('/poweroff', methods = ['GET', 'POST'])
 def poweroff():
     time.sleep(1)
-    os.system('bash /root/voldown')
+    os.system('mpc volume -1')
     return render_template('app2.html')
 
 @app.route('/squeeze', methods = ['GET', 'POST'])
