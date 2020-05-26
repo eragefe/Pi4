@@ -17,6 +17,7 @@ apt-get update
 apt-get install lirc python3-pip mpd mpc upmpdcli upmpdcli-tidal shairport-sync minidlna i2c-tools python-dev python-smbus python3-mpd python-flask libfreetype6-dev libjpeg-dev build-essential -y --allow-unauthenticated
 
 mv /etc/lirc/lircd.conf.dist /etc/lirc/lircd.conf
+mv /etc/lirc/lircd.conf.d/devinput.lircd.conf /etc/lirc/lircd.conf.d/devinput.lircd.conf.dist
 cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
 cp alu.lircd.conf /etc/lirc/lircd.conf.d
