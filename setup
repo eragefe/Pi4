@@ -1,6 +1,7 @@
 #!/bin/sh
 
 timedatectl set-timezone Europe/Stockholm
+echo "GDis" > /etc/hostname
 cp gdis.dtbo /boot/overlays
 cp mountusb /root
 cp umountusb /root
