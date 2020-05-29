@@ -18,7 +18,6 @@ cp mpd.conf /etc/mpd.conf
 cp lircrc /etc/lirc
 cp alu.lircd.conf /etc/lirc/lircd.conf.d
 cp lirc_options.conf /etc/lirc
-mv /etc/upmpdcli.conf /etc/upmpdcli.conf.orig
 cp minidlna.conf /etc/minidlna.conf
 #cp ready.wav streamer.wav coaxial.wav optical.wav wifi.wav ethernet.wav /root
 #cp shairport-sync.conf /etc/shairport-sync.conf
