@@ -1,0 +1,10 @@
+[Unit]
+Description=MediaPlayer
+Requires=mpd.service
+After=mpd.service
+
+[Service]
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
