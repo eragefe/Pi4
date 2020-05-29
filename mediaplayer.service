@@ -5,6 +5,7 @@ After=mpd.service
 
 [Service]
 Type=forking
+ExecStart=/root/pi3/mediaplayer/run.sh
 
 [Install]
 WantedBy=multi-user.target
