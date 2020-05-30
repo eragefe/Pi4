@@ -20,6 +20,7 @@ cp lircrc /etc/lirc
 cp alu.lircd.conf /etc/lirc/lircd.conf.d
 cp lirc_options.conf /etc/lirc
 cp minidlna.conf /etc/minidlna.conf
+cp asound.conf /etc
 #cp ready.wav streamer.wav coaxial.wav optical.wav wifi.wav ethernet.wav /root
 #cp shairport-sync.conf /etc/shairport-sync.conf
 update-rc.d minidlna defaults
