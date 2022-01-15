@@ -1,0 +1,47 @@
+
+--- bcm2835-i2s.c.1	2022-01-14 00:13:19.962475224 +0000
++++ bcm2835-i2s.c	2022-01-15 00:39:59.421359879 +0000
+@@ -146,8 +146,8 @@
+ static void bcm2835_i2s_stop_clock(struct bcm2835_i2s_dev *dev)
+ {
+ 	if (dev->clk_prepared)
+-		clk_disable_unprepare(dev->clk);
+-	dev->clk_prepared = false;
++                clk_prepare_enable(dev->clk);
++	dev->clk_prepared = true;
+ }
+ 
+ static void bcm2835_i2s_clear_fifos(struct bcm2835_i2s_dev *dev,
+@@ -349,8 +349,6 @@
+ 	 */
+ 	regmap_read(dev->i2s_regmap, BCM2835_I2S_CS_A_REG, &csreg);
+ 
+-	if (csreg & (BCM2835_I2S_TXON | BCM2835_I2S_RXON))
+-		return 0;
+ 
+ 	data_length = params_width(params);
+ 	data_delay = 0;
+@@ -649,12 +647,7 @@
+ 	else
+ 		mask = BCM2835_I2S_TXON;
+ 
+-	regmap_update_bits(dev->i2s_regmap,
+-			BCM2835_I2S_CS_A_REG, mask, 0);
+ }
+ 
+ static int bcm2835_i2s_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -728,13 +719,12 @@
+ 
+ 	/* Disable the module */
+ 	regmap_update_bits(dev->i2s_regmap, BCM2835_I2S_CS_A_REG,
+-			BCM2835_I2S_EN, 0);
++			BCM2835_I2S_EN, BCM2835_I2S_EN);
+ 
+ 	/*
+ 	 * Stopping clock is necessary, because stop does
+ 	 * not stop the clock when SND_SOC_DAIFMT_CONT
+ 	 */
+-	bcm2835_i2s_stop_clock(dev);
+ }
+ 
+ static const struct snd_soc_dai_ops bcm2835_i2s_dai_ops = {
