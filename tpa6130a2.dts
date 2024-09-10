@@ -1,0 +1,60 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2711";
+
+	fragment@0 {
+		target = <&i2s>;
+		__overlay__ {
+			status = "okay";
+                };
+	};
+
+        fragment@1 {
+                target-path = "/";
+                __overlay__ {
+                        codec: gdis_codec {
+                                #sound-dai-cells = <0>;
+                                compatible = "ti,pcm5102a";
+                                status = "okay";
+                        };
+                };
+        };
+
+	fragment@2 {
+		target = <&i2c1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			amp:    tpa6130a2@60 {
+				#sound-dai-cells = <0>;
+				compatible = "ti,tpa6130a2";
+				reg = <0x60>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&sound>;
+		__overlay__ {
+			compatible = "simple-audio-card";
+			simple-audio-card,name = "G-Dis-DAC";
+			simple-audio-card,format = "i2s";
+			status="okay";
+			simple-audio-card,aux-devs = <&amp>;
+			cpu_dai: simple-audio-card,cpu {
+				sound-dai = <&i2s>;
+				dai-tdm-slot-num = <2>;
+                                dai-tdm-slot-width = <64>;
+			};
+
+			codec_dai: simple-audio-card,codec {
+				sound-dai = <&codec>;
+			};
+		};
+	};
+};
