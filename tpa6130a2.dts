@@ -58,3 +58,7 @@
 		};
 	};
 };
+/* 
+Compile with:
+   dtc -@ -H epapr -O dtb -o tpa6130a2.dtbo -Wno-unit_address_vs_reg tpa6130a2.dts
+*/
